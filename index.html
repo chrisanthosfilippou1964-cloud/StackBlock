@@ -4,8 +4,6 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Stack</title>
-  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4779596323710666"
-     crossorigin="anonymous"></script>
 <style>
 :root{--bg:#f4f1ea;--fg:#1d1b18;--muted:#6f6a60;--card:#ffffffd9;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#14161a;--fg:#f2efe8;--muted:#9a968c;--card:#1e2126d9}}
@@ -43,6 +41,15 @@ canvas{width:100%;height:100%;display:block}
 .tg input::after{content:"";position:absolute;top:3px;left:3px;width:18px;height:18px;border-radius:50%;background:#fff;transition:transform .15s}
 .tg input:checked{background:#1f9d6b}
 .tg input:checked::after{transform:translateX(18px)}
+.foot{font-size:12px;color:#fff;opacity:.8;text-decoration:underline;margin-top:-2px}
+#tut{position:absolute;inset:0;z-index:8;background:#000a;display:flex;align-items:center;justify-content:center;padding:20px}
+.tbox{background:var(--bg);color:var(--fg);border-radius:20px;padding:26px 24px 22px;width:100%;max-width:340px;box-sizing:border-box;max-height:90vh;overflow:auto;box-shadow:0 10px 40px #0006;text-align:left}
+.tbox h2{margin:0 0 10px;font-size:22px}
+.tbox p{margin:7px 0;font-size:14px;color:var(--muted);line-height:1.5}
+.dots{display:flex;gap:6px;justify-content:center;margin:16px 0 2px}
+.dots i{width:7px;height:7px;border-radius:50%;background:#8886}
+.dots i.on{background:var(--fg)}
+.tbox .btn{width:100%;margin-top:12px;padding:12px 18px}
 .stackbtns{display:flex;flex-direction:column;gap:8px;margin-top:12px}
 .stackbtns .btn{margin-top:0}
 #pbtn{display:flex;align-items:center;justify-content:center;gap:4px;padding:0}
@@ -89,6 +96,8 @@ canvas{width:100%;height:100%;display:block}
 #wheel span{position:absolute;left:50%;top:50%;width:32px;margin:-16px 0 0 -16px;text-align:center;font-size:24px;font-weight:700;color:#fff;transform:rotate(var(--a)) translateY(-78px) rotate(calc(-1*var(--a)))}
 #ptr{position:absolute;top:-16px;left:50%;transform:translateX(-50%);font-size:24px;z-index:2;color:var(--fg)}
 </style>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4779596323710666"
+     crossorigin="anonymous"></script>
 </head>
 <body>
 <div id="wrap" class="home">
@@ -96,22 +105,8 @@ canvas{width:100%;height:100%;display:block}
   <div id="score">0</div>
   <div id="msg"></div>
   <div id="streak"></div>
-  <div id="consent" class="hide"><div class="cbox">
-    <div id="cMain">
-      <h2>We value your privacy</h2>
-      <p>We and our partners store and access information on your device and process data such as your best score, to save your progress, show a public leaderboard, and deliver and measure ads.</p>
-      <p>You can consent to everything, reject everything, or choose which purposes and vendors to allow. You can change your choice any time with Privacy on the home screen.</p>
-      <div class="col"><button class="btn" id="cAll">Consent</button><button class="btn alt" id="cManage">Manage options</button><button class="btn alt" id="cNone">Reject all</button></div>
-    </div>
-    <div id="cPrefs" class="hide">
-      <h2>Manage options</h2>
-      <div class="tabs"><button class="tab on" data-t="cP">Purposes</button><button class="tab" data-t="cV">Vendors</button></div>
-      <div id="cP" class="tl"></div>
-      <div id="cV" class="tl hide"></div>
-      <p style="font-size:12px">This is a demo list. The vendors shown are placeholders, not real companies.</p>
-      <div class="col"><button class="btn" id="cSave">Save choices</button><button class="btn alt" id="cBack">Back</button></div>
-    </div>
-  </div></div>
+  <div id="tut" class="hide"><div class="tbox"><div id="tutBody"></div><div class="dots" id="tutDots"></div><button class="btn" id="tutNext">Next</button></div></div>
+  
   <div id="start">
     <div><div class="logo">STACK</div><div class="tag">Drop · Align · Climb</div></div>
     <div class="hMid">
@@ -124,8 +119,9 @@ canvas{width:100%;height:100%;display:block}
     <div class="hBot">
       <div class="chips"><span>🐢</span><span>×2</span><span>↔</span><span>🎯</span><span>🔥</span></div>
       <div class="cap">5 abilities · 10 free spins every round</div>
-      <div class="row"><button class="link" data-lb>Leaderboard</button><button class="link" id="privBtn">Privacy</button></div>
+      <button class="link" data-lb>Leaderboard</button>
       <button class="play" id="playBtn">PLAY</button>
+      <a class="foot" href="privacy.html">Privacy Policy</a>
     </div>
   </div>
   <div id="over" class="card hide"><p class="nb hide" id="nb">New best!</p><p>Game over</p><b id="final">0</b><p>Best: <span id="best1">0</span></p><p style="margin-top:12px">Tap to play again</p><div class="row"><button class="btn" data-lb>Leaderboard</button><button class="btn" id="homeBtn">Home</button></div></div>
@@ -139,9 +135,7 @@ canvas{width:100%;height:100%;display:block}
   <div id="wheelC" class="card hide" style="z-index:6"><div id="wheelBox"><div id="ptr">▼</div><div id="wheel"></div></div><p id="wres">Spinning…</p><button class="btn hide" id="wclose">Collect</button></div>
 </div>
 <script>
-let consent=null;
-try{consent=JSON.parse(localStorage.getItem('stack-consent'))}catch(e){consent=null}
-if(!consent||typeof consent!=='object')consent=null;
+const consent={store:true,lb:true}; /* ad consent is handled by Google's message */
 /* nothing is saved in the browser unless the player accepted (the choice itself is the only exception) */
 try{const rawSet=Storage.prototype.setItem;Storage.prototype.setItem=function(k,v){if(k==='stack-consent'||(consent&&consent.store))return rawSet.call(this,k,v)}}catch(e){}
 const cv=document.getElementById('c'),ctx=cv.getContext('2d');
@@ -209,17 +203,17 @@ function end(){
   setTimeout(()=>{if(state==='over')$('over').classList.remove('hide')},600);
 }
 function act(go){initAudio();if(paused)return;
-  if(state==='idle'){if(!go)return;state='play';$('start').classList.add('hide');$('wrap').classList.remove('home');reset();resetSpins();}
+  if(state==='idle'){if(!go)return;if(lbOpen())return;if(needTut()){openTut();return}state='play';$('start').classList.add('hide');$('wrap').classList.remove('home');reset();resetSpins();}
   else if(state==='play')place();
   else if(state==='over'&&!$('over').classList.contains('hide')){$('over').classList.add('hide');state='play';reset();resetSpins();}
 }
-const lbOpen=()=>adBusy||!$('lb').classList.contains('hide')||!$('consent').classList.contains('hide');
+const lbOpen=()=>adBusy||!$('lb').classList.contains('hide')||!$('tut').classList.contains('hide');
 function showStreak(){$('streak').textContent=combo>0?'Streak '+combo+' · next perfect +'+Math.min(1024,Math.pow(2,combo)):''}
 let paused=false;
 function togglePause(){if(state!=='play')return;paused=!paused;$('pause').classList.toggle('hide',!paused)}
 window.addEventListener('contextmenu',e=>e.preventDefault());
 window.addEventListener('pointerdown',e=>{
-  if(e.target.closest('button')||lbOpen())return;
+  if(e.target.closest('button,a')||lbOpen())return;
   if(e.button===2){e.preventDefault();togglePause();return}
   if(e.button!==0)return;
   e.preventDefault();
@@ -349,7 +343,7 @@ let rot=0,adPaused=false;
 $('adbtn').onclick=e=>{
   e.currentTarget.blur();if(spinsLeft()<=0||adBusy)return;
   initAudio();adBusy=true;adPaused=false;if(state==='play'&&!paused){togglePause();adPaused=true}updAd();
-  $('ad').classList.remove('hide');$('adNote').textContent=(consent&&consent.ads?'Personalised':'Non-personalised')+' placeholder ad. Your spin starts when it ends.';let t=5;$('adT').textContent=t;
+  $('ad').classList.remove('hide');let t=5;$('adT').textContent=t;
   const iv=setInterval(()=>{t--;$('adT').textContent=t;if(t<=0){clearInterval(iv);$('ad').classList.add('hide');spin()}},1000);
 };
 function spin(){
@@ -371,44 +365,32 @@ document.addEventListener('click',e=>{
 });
 function resetSpins(){sp.n=0;AB.forEach(a=>{inv[a.k]=1});saveInv();updAd()}
 updAd();
-(function(){
-  const PUR=[['store','Store and access information on a device','Saves your best score, ability charges and sound setting in this browser.'],['lb','Public leaderboard','Shows your display name and best score to other players.'],['ads','Personalised advertising','Uses data to choose ads that suit you.'],['profile','Create profiles for personalised ads','Builds an interest profile from how you play.'],['measure','Measure ad performance','Counts views and rewards for the ads you watch.'],['content','Personalise content','Tailors rewards and offers to how you play.']];
-  const VEN=[['v1','Example Ad Network','Ad delivery and measurement'],['v2','Sample Analytics Co.','Measurement and profiles'],['v3','Demo Rewards Partner','Content personalisation']];
-  const c=$('consent');
-  const mk=v=>{const o={vendors:{}};PUR.forEach(p=>o[p[0]]=v);VEN.forEach(x=>o.vendors[x[0]]=v);return o};
-  let draft=mk(false);
-  const row=(box,t,d,on,fn)=>{
-    const l=document.createElement('label');l.className='tg';
-    const w=document.createElement('div'),b=document.createElement('span'),sm=document.createElement('small');
-    b.textContent=t;sm.textContent=d;w.append(b,sm);
-    const i=document.createElement('input');i.type='checkbox';i.checked=on;i.onchange=()=>fn(i.checked);
-    l.append(w,i);box.appendChild(l);
-  };
-  const build=()=>{
-    $('cP').textContent='';$('cV').textContent='';
-    PUR.forEach(p=>row($('cP'),p[1],p[2],draft[p[0]],v=>{draft[p[0]]=v}));
-    VEN.forEach(x=>row($('cV'),x[1],x[2],draft.vendors[x[0]],v=>{draft.vendors[x[0]]=v}));
-  };
-  const showMain=()=>{$('cMain').classList.remove('hide');$('cPrefs').classList.add('hide')};
-  const showPrefs=()=>{draft=consent?JSON.parse(JSON.stringify(consent)):mk(false);build();$('cMain').classList.add('hide');$('cPrefs').classList.remove('hide');c.classList.remove('hide')};
-  const set=v=>{
-    consent=v;try{localStorage.setItem('stack-consent',JSON.stringify(v))}catch(e){}
-    if(v.store){try{localStorage.setItem('stack-best',best);localStorage.setItem('stack-inv',JSON.stringify(inv))}catch(e){}}
-    else{try{['stack-best','stack-inv','stack-top','stack-mute'].forEach(k=>localStorage.removeItem(k))}catch(e){}}
-    c.classList.add('hide');
-  };
-  if(!consent)c.classList.remove('hide');
-  $('cAll').onclick=()=>set(mk(true));
-  $('cNone').onclick=()=>set(mk(false));
-  $('cManage').onclick=showPrefs;
-  $('cSave').onclick=()=>set(JSON.parse(JSON.stringify(draft)));
-  $('cBack').onclick=()=>{if(consent)c.classList.add('hide');else showMain()};
-  $('privBtn').onclick=()=>{showPrefs()};
-  document.querySelectorAll('.tab').forEach(t=>t.onclick=()=>{
-    document.querySelectorAll('.tab').forEach(x=>x.classList.toggle('on',x===t));
-    $('cP').classList.toggle('hide',t.dataset.t!=='cP');$('cV').classList.toggle('hide',t.dataset.t!=='cV');
-  });
-})();
+
+
+/* ---- first-play tutorial ---- */
+const TUT=[
+ {t:'How to play',p:['A block slides across the screen. Tap, click or press Space to drop it onto your tower.','Anything that hangs over the block below is sliced off, so your tower gets narrower.','Miss the tower completely and the round is over.','To pause, use the pause button, right-click or press P.']},
+ {t:'Abilities',p:['You start every round with one charge of each ability. Use them from the bar at the bottom, or press keys 1 to 5.','Charges never come back with time. The only way to get more is the free spin wheel.','\ud83d\udc22 Slow: halves block speed for 60 seconds.','\u00d72 Multiply: double points for the next 50 blocks.','\u2194 Resize: restores your whole tower to full width.','\ud83c\udfaf Accuracy: doubles the perfect-drop window for 30 seconds.','\ud83d\udd25 Combo: your block regrows 1.5\u00d7 faster after perfects for 45 seconds.','After you use an ability, you have to wait 2 minutes before using another charge of it. That wait is separate from how long its effect lasts.']},
+ {t:'Free spin wheel',p:['Press Free spin at the top to watch a short ad. When it ends, the wheel spins and gives you one random ability. All five are equally likely.','You get 10 spins every round.']},
+ {t:'Perfect combos',p:['Drop a block exactly on the one below for a perfect. Perfects in a row double in value: 1, 2, 4, 8 and so on, up to 1,024 points per block (2,048 with Multiply).','Three perfects in a row also make your block wider again.','A sliced block resets your streak.']},
+ {t:'Your goals',p:['Stack as high as you can and beat your best score.','Chain perfect streaks for big points, and use your abilities at the right moment.','Check the Leaderboard on the home screen to see your best runs.']}
+];
+let tutI=0,tutDone=false;
+const needTut=()=>{if(tutDone)return false;try{return localStorage.getItem('stack-tutorial')!=='1'}catch(e){return true}};
+function tutRender(){
+  const s=TUT[tutI],b=$('tutBody'),d=$('tutDots');
+  b.textContent='';d.textContent='';
+  const h=document.createElement('h2');h.textContent=s.t;b.appendChild(h);
+  s.p.forEach(x=>{const p=document.createElement('p');p.textContent=x;b.appendChild(p)});
+  TUT.forEach((_,i)=>{const o=document.createElement('i');if(i===tutI)o.className='on';d.appendChild(o)});
+  $('tutNext').textContent=tutI<TUT.length-1?'Next':'Start playing';
+}
+function openTut(){tutI=0;tutRender();$('tut').classList.remove('hide')}
+$('tutNext').onclick=()=>{
+  if(tutI<TUT.length-1){tutI++;tutRender();return}
+  tutDone=true;try{localStorage.setItem('stack-tutorial','1')}catch(e){}
+  $('tut').classList.add('hide');act(1);
+};
 
 let last=performance.now();
 function frame(t){
@@ -446,8 +428,5 @@ function draw(){
 }
 requestAnimationFrame(frame);
 </script>
-<footer style="position:fixed; bottom:6px; left:0; right:0; text-align:center; font-size:12px; font-family:sans-serif; z-index:5;">
-   <span>Tap or press Space to stack blocks | <a href="privacy.html">Privacy Policy</a></span>
-</footer>
 </body>
-</html> 
+</html>
